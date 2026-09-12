@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>التصريح بالضريبة على دخل الأشخاص الطبيعيين</title>
+<style>
+  :root{
+    --encre:#14313a; --doux:#527078; --papier:#e8ecea; --feuille:#fff;
+    --accent:#1d7a68; --accent-fond:#e6f1ee; --or:#8a6a1f; --or-fond:#f7f1e2;
+    --trait:#c6d3cf; --gris:#f0f2f1;
+    --ar:"Noto Naskh Arabic","Geeza Pro","Segoe UI",Tahoma,sans-serif;
+    --lat:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--papier);color:var(--encre);font-family:var(--ar);font-size:15px;line-height:1.7}
+  .enveloppe{max-width:860px;margin:0 auto;padding:16px 12px 60px}
+
+  .titre{background:var(--encre);color:#fff;border-radius:10px;padding:18px 20px;margin-bottom:14px}
+  .titre h1{margin:0;font-size:1.35rem;font-weight:700}
+  .titre p{margin:6px 0 0;font-size:.85rem;color:#adc6c3;font-family:var(--lat);direction:ltr;text-align:left}
+
+  .legende{display:flex;flex-wrap:wrap;gap:14px;background:var(--feuille);border:1px solid var(--trait);
+    border-radius:10px;padding:12px 14px;margin-bottom:16px;font-family:var(--lat);font-size:.8rem;direction:ltr;text-align:left}
+  .puce{display:inline-block;width:26px;height:14px;border-radius:3px;vertical-align:-2px;margin-right:6px;border:1px solid var(--trait)}
+  .p1{background:#fff;border-bottom:2px solid var(--accent)}
+  .p2{background:var(--accent-fond);border-color:var(--accent)}
+  .p3{background:repeating-linear-gradient(45deg,#eceeed,#eceeed 4px,#e2e5e4 4px,#e2e5e4 8px)}
+
+  .feuille{background:var(--feuille);border:1px solid var(--trait);border-radius:10px;padding:16px;margin-bottom:16px}
+  .feuille>h2{margin:0 0 4px;font-size:1.05rem;font-weight:700;padding-bottom:8px;border-bottom:2px solid var(--encre)}
+  .feuille>h2 span{float:left;font-family:var(--lat);font-size:.72rem;color:var(--doux);font-weight:400;padding-top:6px}
+  h3{font-size:.95rem;margin:18px 0 8px;color:var(--accent)}
+
+  .ligne{display:flex;flex-wrap:wrap;align-items:center;gap:8px;padding:7px 0;border-bottom:1px dotted var(--trait)}
+  .ligne:last-child{border-bottom:none}
+  .ligne .nom{flex:1 1 210px;min-width:180px;font-size:.92rem}
+  .ligne .nom em{display:block;font-family:var(--lat);font-style:normal;font-size:.72rem;color:var(--doux);direction:ltr;text-align:right}
+  .ligne .val{flex:0 0 auto;width:170px}
+  .duo{display:flex;flex-wrap:wrap;gap:10px}
+  .duo>div{flex:1 1 220px}
+
+  input,select{width:100%;font-family:var(--ar);font-size:.95rem;padding:7px 9px;border-radius:6px;color:var(--encre)}
+  input[type=text],input[type=number],select{border:1px solid var(--trait);background:#fff;border-bottom:2px solid var(--accent)}
+  input[type=number]{font-variant-numeric:tabular-nums;text-align:left;direction:ltr}
+  input:focus,select:focus,button:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+  input.calc{background:var(--accent-fond);border:1px solid var(--accent);border-bottom-width:1px;font-weight:700;color:var(--encre)}
+  input.gris,select.gris{background:repeating-linear-gradient(45deg,#eceeed,#eceeed 4px,#e2e5e4 4px,#e2e5e4 8px);
+    border:1px solid var(--trait);border-bottom-width:1px;color:#9aa5a3;cursor:not-allowed}
+  .ligne.inactive .nom{color:#9aa5a3}
+  label.pt{display:block;font-size:.82rem;color:var(--doux);margin-bottom:3px}
+  label.pt em{font-style:normal;font-family:var(--lat);font-size:.72rem;display:block}
+
+  .choix{display:flex;flex-wrap:wrap;gap:8px}
+  .choix label{display:flex;align-items:center;gap:6px;border:1px solid var(--trait);border-radius:20px;padding:5px 12px;font-size:.88rem;cursor:pointer;background:#fff}
+  .choix input{width:auto;accent-color:var(--accent)}
+  .choix label.on{border-color:var(--accent);background:var(--accent-fond)}
+
+  table.grille{width:100%;border-collapse:collapse;font-size:.82rem;margin-top:6px}
+  table.grille th,table.grille td{border:1px solid var(--trait);padding:6px 4px;text-align:center}
+  table.grille th{background:#f3f6f5;font-weight:600}
+  table.grille td.off{background:repeating-linear-gradient(45deg,#eceeed,#eceeed 4px,#e2e5e4 4px,#e2e5e4 8px);color:#9aa5a3}
+  table.grille td.on{background:var(--accent-fond);color:var(--accent);font-weight:700}
+
+  table.bareme{width:100%;border-collapse:collapse;font-size:.85rem;margin-top:8px}
+  table.bareme th,table.bareme td{border:1px solid var(--trait);padding:7px 6px;text-align:center}
+  table.bareme th{background:#f3f6f5}
+  table.bareme td.mt{font-variant-numeric:tabular-nums;direction:ltr}
+  table.bareme tr.vide td{color:#9aa5a3}
+
+  .note{background:var(--or-fond);border-right:3px solid var(--or);border-radius:7px 0 0 7px;padding:10px 12px;font-size:.85rem;margin-top:12px}
+  .resume{background:var(--encre);color:#fff;border-radius:10px;padding:18px}
+  .resume .l{display:flex;justify-content:space-between;gap:10px;padding:8px 0;border-bottom:1px solid #2d4d55;font-size:.92rem}
+  .resume .l:last-child{border-bottom:none;padding-top:14px;font-size:1.1rem;font-weight:700}
+  .resume b{font-variant-numeric:tabular-nums;direction:ltr}
+  .boutons{display:flex;gap:10px;margin-top:18px}
+  .boutons button{flex:1;padding:12px;border-radius:8px;font-family:var(--ar);font-size:.95rem;cursor:pointer;border:1px solid var(--encre);background:#fff;color:var(--encre)}
+  .boutons button.plein{background:var(--encre);color:#fff}
+  footer{font-family:var(--lat);direction:ltr;text-align:left;font-size:.78rem;color:var(--doux);margin-top:22px;line-height:1.6}
+
+  @media print{
+    body{background:#fff}
+    .boutons,.legende{display:none}
+    .feuille,.resume{break-inside:avoid;border-color:#888}
+    .titre,.resume{background:#fff;color:#000;border:2px solid #000}
+    .titre p,.resume .l{color:#333;border-color:#bbb}
+    input.gris,table.grille td.off{background:#f2f2f2;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+    input{border:1px solid #999!important}
+  }
+</style>
+</head>
+<body>
+<div class="enveloppe">
+
+  <div class="titre">
+    <h1>التصريح بالضريبة على دخل الأشخاص الطبيعيين</h1>
+    <p>Cabinet de psychomotricité · bénéfices des professions non commerciales</p>
+  </div>
+
+  <div class="legende">
+    <span><i class="puce p1"></i>À remplir par vous</span>
+    <span><i class="puce p2"></i>Calculé automatiquement</span>
+    <span><i class="puce p3"></i>Ne vous concerne pas</span>
+  </div>
+
+  <!-- ===== 1 ===== -->
+  <div class="feuille">
+    <h2>الترويسة والمعرّف<span>Page 1 · en-tête</span></h2>
+    <div class="duo">
+      <div><label class="pt">رمز التصريح<em>0 = dépôt spontané</em></label><input type="text" class="calc" value="0" readonly></div>
+      <div><label class="pt">دخل سنة<em>Année des revenus</em></label><input type="number" id="annee" value="2026"></div>
+      <div><label class="pt">المعرّف الجبائي<em>Identifiant fiscal</em></label><input type="text" id="mif" placeholder="0000000/A/M/000"></div>
+      <div><label class="pt">رقم بطاقة التعريف الوطنية<em>CIN</em></label><input type="text" id="cin"></div>
+      <div><label class="pt">تاريخ افتتاح السنة المالية<em>Ouverture</em></label><input type="text" id="ouv" class="calc" readonly></div>
+      <div><label class="pt">تاريخ ختم السنة المالية<em>Clôture</em></label><input type="text" id="clo" class="calc" readonly></div>
+    </div>
+    <h3>الأداءات المدفوعة على أساس هذا التصريح</h3>
+    <div class="duo">
+      <div><label class="pt">الضريبة على الدخل<em>Impôt sur le revenu</em></label><input type="number" id="hImpot" class="calc" readonly></div>
+      <div><label class="pt">معلوم الزيارة<em>Hôtels et cafés</em></label><input type="text" class="gris" value="—" disabled></div>
+      <div><label class="pt">صندوق ترغيب الأجراء<em>Employeurs uniquement</em></label><input type="text" class="gris" value="—" disabled></div>
+    </div>
+  </div>
+
+  <!-- ===== 2 ===== -->
+  <div class="feuille">
+    <h2>الهوية والحالة المدنية<span>Identité et situation</span></h2>
+    <div class="duo">
+      <div><label class="pt">اللقب<em>Nom</em></label><input type="text" id="nom"></div>
+      <div><label class="pt">الاسم<em>Prénom</em></label><input type="text" id="prenom"></div>
+      <div style="flex:1 1 100%"><label class="pt">العنــوان<em>Adresse du cabinet</em></label><input type="text" id="adresse"></div>
+      <div><label class="pt">الترقيم البريدي<em>Code postal</em></label><input type="text" id="cp"></div>
+      <div><label class="pt">رقم الهاتف<em>Téléphone</em></label><input type="text" id="tel"></div>
+      <div style="flex:1 1 100%"><label class="pt">النشـــاط<em>Activité</em></label><input type="text" id="activite" value="مختص في العلاج النفسي الحركي"></div>
+    </div>
+    <h3>الحالة المدنية</h3>
+    <div class="choix" id="etatCivil">
+      <label><input type="radio" name="ec" value="c"> أعزب</label>
+      <label class="on"><input type="radio" name="ec" value="m" checked> متزوج</label>
+      <label><input type="radio" name="ec" value="d"> مطلّق</label>
+      <label><input type="radio" name="ec" value="v"> أرمل</label>
+    </div>
+    <h3>الأطفال في الكفالة</h3>
+    <div class="duo">
+      <div><label class="pt">أطفال دون 20 سنة<em>Enfants de moins de 20 ans (100 DT chacun, 4 max)</em></label><input type="number" id="enf" value="0" min="0" max="4"></div>
+      <div><label class="pt">أطفال طلبة دون منحة<em>Étudiants sans bourse (1 000 DT)</em></label><input type="number" id="enfEtu" value="0" min="0" max="2"></div>
+      <div><label class="pt">أطفال معوقون<em>Enfants handicapés (2 000 DT)</em></label><input type="number" id="enfH" value="0" min="0" max="4"></div>
+      <div><label class="pt">والدان في الكفالة<em>Parents à charge — ne vous concerne pas</em></label><input type="text" class="gris" value="—" disabled></div>
+    </div>
+  </div>
+
+  <!-- ===== 3 ===== -->
+  <div class="feuille">
+    <h2>أصناف المداخيل<span>Catégories de revenus</span></h2>
+    <table class="grille">
+      <tr>
+        <th>1<br>صناعية وتجارية</th><th>2<br>مهن غير تجارية</th><th>3<br>فلاحية</th><th>4<br>عقارية</th>
+        <th>5<br>أجور</th><th>6<br>أوراق مالية</th><th>7<br>أخرى</th><th>8<br>معفاة</th><th>9<br>غير خاضعة</th>
+      </tr>
+      <tr>
+        <td class="off">—</td><td class="on" id="caseCat">✕</td><td class="off">—</td><td class="off">—</td>
+        <td class="off">—</td><td class="off">—</td><td class="off">—</td><td class="off">—</td><td class="off">—</td>
+      </tr>
+    </table>
+    <div class="note">صنف واحد يعنيك: <b>أرباح المهن غير التجارية</b>. Si un jour vous percevez un salaire ou un loyer, la colonne correspondante devra être cochée en plus.</div>
+  </div>
+
+  <!-- ===== 4 ===== -->
+  <div class="feuille">
+    <h2>أرباح المهن غير التجارية<span>Page 2 · bénéfices non commerciaux</span></h2>
+    <div class="choix" id="regimeChoix" style="margin-bottom:6px">
+      <label class="on"><input type="radio" name="rg" value="forfait" checked> قاعدة تقديرية (80%)</label>
+      <label><input type="radio" name="rg" value="reel"> نظام حقيقي (محاسبة)</label>
+    </div>
+
+    <h3>أ) النظام الحقيقي</h3>
+    <div class="ligne" id="lgR1"><div class="nom">رقم المعاملات المحلي خال من الأداءات<em>CA hors taxe</em></div><div class="val"><input type="number" id="rCaHT" class="gris" disabled></div></div>
+    <div class="ligne inactive"><div class="nom">رقم المعاملات عند التصدير<em>Export</em></div><div class="val"><input type="text" class="gris" value="—" disabled></div></div>
+    <div class="ligne" id="lgR2"><div class="nom">رقم المعاملات الجملي بما في ذلك الأداءات<em>CA toutes taxes comprises</em></div><div class="val"><input type="number" id="rCaTTC" class="gris" disabled></div></div>
+    <div class="ligne inactive"><div class="nom">مبلغ المنح<em>Subventions</em></div><div class="val"><input type="text" class="gris" value="—" disabled></div></div>
+    <div class="ligne" id="lgR3"><div class="nom">النتيجة المحاسبية<em>Résultat comptable</em></div><div class="val"><input type="number" id="rResC" class="gris" disabled></div></div>
+    <div class="ligne" id="lgR4"><div class="nom">النتيجة الجبائية<em>Résultat fiscal</em></div><div class="val"><input type="number" id="rResF" class="gris" disabled></div></div>
+
+    <h3>ب) ضبط الربح على أساس قاعدة تقديرية</h3>
+    <div class="ligne" id="lgF1"><div class="nom">المقابيض بعنوان الخدمات المحلية<em>Encaissements de l'année, TTC</em></div><div class="val"><input type="number" id="fRecettes" value="0"></div></div>
+    <div class="ligne inactive"><div class="nom">المقابيض بعنوان الخدمات المصدرة<em>Export</em></div><div class="val"><input type="text" class="gris" value="—" disabled></div></div>
+    <div class="ligne"><div class="nom">مجموع المقابيض الخام بما في ذلك الأداءات<em>Total des encaissements bruts</em></div><div class="val"><input type="number" id="fTotal" class="calc" readonly></div></div>
+    <div class="ligne"><div class="nom">الربح الجبائي (80% من المقابيض الخام)<em>Bénéfice imposable</em></div><div class="val"><input type="number" id="fBenef" class="calc" readonly></div></div>
+
+    <h3>ج) المناب في شركات الأشخاص</h3>
+    <div class="ligne inactive"><div class="nom">المناب والقيمة الزائدة<em>Parts dans des sociétés de personnes</em></div><div class="val"><input type="text" class="gris" value="—" disabled></div></div>
+
+    <div class="ligne" style="border-top:2px solid var(--encre);margin-top:8px;padding-top:10px">
+      <div class="nom"><b>النتيجة الصافية</b><em>Résultat net de la catégorie</em></div><div class="val"><input type="number" id="netCat" class="calc" readonly></div>
+    </div>
+  </div>
+
+  <!-- ===== 5 ===== -->
+  <div class="feuille">
+    <h2>أصناف أخرى<span>Autres catégories · non concernées</span></h2>
+    <div class="ligne inactive"><div class="nom">أرباح صناعية وتجارية<em>Commerce et industrie</em></div><div class="val"><input type="text" class="gris" value="—" disabled></div></div>
+    <div class="ligne inactive"><div class="nom">أرباح الأنشطة الفلاحية أو الصيد البحري<em>Agriculture et pêche</em></div><div class="val"><input type="text" class="gris" value="—" disabled></div></div>
+    <div class="ligne inactive"><div class="nom">المداخيل العقارية<em>Revenus fonciers</em></div><div class="val"><input type="text" class="gris" value="—" disabled></div></div>
+    <div class="ligne inactive"><div class="nom">المرتبات والأجور والجرايات<em>Salaires et pensions</em></div><div class="val"><input type="text" class="gris" value="—" disabled></div></div>
+    <div class="ligne inactive"><div class="nom">مداخيل الأوراق المالية ورؤوس الأموال المنقولة<em>Valeurs mobilières</em></div><div class="val"><input type="text" class="gris" value="—" disabled></div></div>
+    <div class="ligne inactive"><div class="nom">مداخيل أخرى<em>Autres revenus</em></div><div class="val"><input type="text" class="gris" value="—" disabled></div></div>
+    <div class="note">Laissez ces blocs vides tant que le cabinet est votre seule source de revenus. Un salaire, un loyer ou des dividendes vous obligeraient à les remplir.</div>
+  </div>
+
+  <!-- ===== 6 ===== -->
+  <div class="feuille">
+    <h2>الدخل الجملي والتخفيضات<span>Page 5 · revenu global et déductions</span></h2>
+    <div class="ligne"><div class="nom">الدخل الجملي الصافي<em>Revenu global net</em></div><div class="val"><input type="number" id="globalNet" class="calc" readonly></div></div>
+    <div class="ligne inactive"><div class="nom">خسائر بعنوان السنوات الفارطة<em>Déficits antérieurs</em></div><div class="val"><input type="text" class="gris" value="لا" disabled></div></div>
+
+    <h3>تخفيضات أخرى</h3>
+    <div class="ligne"><div class="nom">رئيس العائلة<em>Chef de famille</em></div><div class="val"><input type="number" id="dChef" class="calc" readonly></div></div>
+    <div class="ligne"><div class="nom">أطفال في الكفالة<em>Enfants à charge</em></div><div class="val"><input type="number" id="dEnf" class="calc" readonly></div></div>
+    <div class="ligne"><div class="nom">الاشتراكات المدفوعة من قبل العملة غير الأجراء<em>Cotisations CNSS de l'année, déductibles</em></div><div class="val"><input type="number" id="dCnss" value="0"></div></div>
+    <div class="ligne"><div class="nom">الفوائض المدفوعة بعنوان قرض السكن<em>Intérêts d'un prêt logement, si vous en avez un</em></div><div class="val"><input type="number" id="dLogement" value="0"></div></div>
+    <div class="ligne"><div class="nom">أقساط التأمين على الحياة<em>Assurance vie, si vous en avez une</em></div><div class="val"><input type="number" id="dVie" value="0"></div></div>
+    <div class="ligne inactive"><div class="nom">فوائد حسابات الادخار والقروض الرقاعية<em>Épargne et obligations</em></div><div class="val"><input type="text" class="gris" value="—" disabled></div></div>
+    <div class="ligne inactive"><div class="nom">والدان في الكفالة، قروض جامعية، تبرعات<em>Parents, prêts universitaires, dons</em></div><div class="val"><input type="text" class="gris" value="—" disabled></div></div>
+    <div class="ligne inactive"><div class="nom">طرح المداخيل المعاد استثمارها<em>Réinvestissements</em></div><div class="val"><input type="text" class="gris" value="—" disabled></div></div>
+    <div class="ligne" style="border-top:2px solid var(--encre);padding-top:10px"><div class="nom"><b>مجموع التخفيضات</b><em>Total des déductions</em></div><div class="val"><input type="number" id="dTotal" class="calc" readonly></div></div>
+  </div>
+
+  <!-- ===== 7 ===== -->
+  <div class="feuille">
+    <h2>احتساب الضريبة<span>Page 6 · calcul de l'impôt</span></h2>
+    <div class="ligne"><div class="nom">الدخل الجملي الصافي الخاضع للضريبة<em>Revenu imposable arrondi</em></div><div class="val"><input type="number" id="imposable" class="calc" readonly></div></div>
+
+    <h3>الجدول التصاعدي</h3>
+    <table class="bareme">
+      <tr><th>الشريحة</th><th>النسبة</th><th>الدخل في الشريحة</th><th>الضريبة</th></tr>
+      <tbody id="corpsBareme"></tbody>
+      <tr><td colspan="3"><b>الضريبة حسب الجدول</b></td><td class="mt" id="tBareme"><b>0</b></td></tr>
+    </table>
+    <div class="note">الجدول المعتمد هنا هو جدول قانون المالية لسنة 2025 (ثماني شرائح من 0% إلى 40%). الجدول المطبوع على مطبوعة 2021 لم يعد ساري المفعول.</div>
+
+    <h3>الضريبة الدنيا</h3>
+    <div class="ligne"><div class="nom">رقم المعاملات المحلي بما في ذلك الأداءات<em>Base du minimum</em></div><div class="val"><input type="number" id="baseMin" class="calc" readonly></div></div>
+    <div class="ligne"><div class="nom">الضريبة الدنيا (0,2% بحد أدنى 300 د)<em>Minimum d'impôt</em></div><div class="val"><input type="number" id="minImpot" class="calc" readonly></div></div>
+    <div class="ligne"><div class="nom"><b>الضريبة المستوجبة</b><em>Le plus élevé des deux</em></div><div class="val"><input type="number" id="impotDu" class="calc" readonly></div></div>
+
+    <h3>الخصم من المورد والأقساط الاحتياطية</h3>
+    <div class="ligne"><div class="nom">الخصم من المورد<em>Retenues subies dans l'année</em></div><div class="val"><input type="number" id="ras" value="0"></div></div>
+    <div class="ligne"><div class="nom">القسط الأول<em>1er acompte (juin)</em></div><div class="val"><input type="number" id="ac1" value="0"></div></div>
+    <div class="ligne"><div class="nom">القسط الثاني<em>2e acompte (septembre)</em></div><div class="val"><input type="number" id="ac2" value="0"></div></div>
+    <div class="ligne"><div class="nom">القسط الثالث<em>3e acompte (décembre)</em></div><div class="val"><input type="number" id="ac3" value="0"></div></div>
+    <div class="ligne"><div class="nom">مجموع المدفوعات القابلة للطرح<em>Total imputable</em></div><div class="val"><input type="number" id="acTotal" class="calc" readonly></div></div>
+    <div class="ligne inactive"><div class="nom">التسبقة على المنتجات الموردة، مناب شركات الأشخاص<em>Avances diverses</em></div><div class="val"><input type="text" class="gris" value="—" disabled></div></div>
+  </div>
+
+  <!-- ===== 8 ===== -->
+  <div class="feuille">
+    <h2>المساهمة الاجتماعية التضامنية<span>Page 7 · CSS</span></h2>
+    <div class="ligne"><div class="nom">الدخل السنوي الصافي<em>Base</em></div><div class="val"><input type="number" id="cssBase" class="calc" readonly></div></div>
+    <div class="ligne"><div class="nom">النسبة<em>Taux à confirmer avec la loi de finances en vigueur</em></div><div class="val"><input type="number" id="cssTaux" value="1" step="0.5"></div></div>
+    <div class="ligne"><div class="nom">المساهمة المستوجبة<em>CSS due</em></div><div class="val"><input type="number" id="cssDue" class="calc" readonly></div></div>
+  </div>
+
+  <!-- ===== 9 ===== -->
+  <div class="feuille">
+    <h2>إرشادات أخرى<span>Page 8 · renseignements complémentaires</span></h2>
+    <div class="duo">
+      <div><label class="pt">المؤسسة البنكية أو البريدية<em>Banque</em></label><input type="text" id="banque"></div>
+      <div><label class="pt">رقم الحساب<em>RIB</em></label><input type="text" id="rib"></div>
+      <div><label class="pt">اسم المحاسب أو الخبير المحاسب<em>Comptable</em></label><input type="text" id="comptable"></div>
+      <div><label class="pt">المعرّف الجبائي للمحاسب<em>Identifiant du comptable</em></label><input type="text" id="mifComptable"></div>
+    </div>
+    <h3>بيانات حول الأطفال في الكفالة</h3>
+    <div class="duo">
+      <div><label class="pt">الاسم واللقب<em>Enfant 1</em></label><input type="text" id="e1"></div>
+      <div><label class="pt">تاريخ الولادة<em>Date de naissance</em></label><input type="text" id="e1d" placeholder="jj/mm/aaaa"></div>
+      <div><label class="pt">الاسم واللقب<em>Enfant 2</em></label><input type="text" id="e2"></div>
+      <div><label class="pt">تاريخ الولادة<em>Date de naissance</em></label><input type="text" id="e2d" placeholder="jj/mm/aaaa"></div>
+    </div>
+    <div class="note">الصفحتان 11 و12 (خاص بالإدارة، وجدول الامتيازات الجبائية) لا تُعمّران من طرفك.</div>
+  </div>
+
+  <div class="resume">
+    <div class="l"><span>الربح الجبائي</span><b id="sBenef">0</b></div>
+    <div class="l"><span>مجموع التخفيضات</span><b id="sDeduc">0</b></div>
+    <div class="l"><span>الدخل الخاضع للضريبة</span><b id="sImposable">0</b></div>
+    <div class="l"><span>الضريبة على الدخل</span><b id="sImpot">0</b></div>
+    <div class="l"><span>المساهمة الاجتماعية التضامنية</span><b id="sCss">0</b></div>
+    <div class="l"><span>يطرح: الخصم من المورد والأقساط</span><b id="sPaye">0</b></div>
+    <div class="l"><span id="sLabel">المبلغ المستوجب</span><b id="sSolde">0</b></div>
+  </div>
+
+  <div class="boutons">
+    <button class="plein" onclick="window.print()">طباعة أو حفظ PDF</button>
+    <button onclick="if(confirm('إفراغ كل الخانات؟'))location.reload()">إفراغ</button>
+  </div>
+
+  <footer>
+    Reproduction de travail du formulaire DGI, à recopier sur l'imprimé officiel de l'année en cours. Barème à huit tranches de la loi de finances 2025, minimum d'impôt de 0,2 % avec plancher de 300 DT, bénéfice forfaitaire de 80 % des recettes brutes. Le taux de la contribution sociale de solidarité est modifiable : vérifiez-le avant le dépôt. Faites valider par un expert-comptable.
+  </footer>
+</div>
+
+<script>
+(function(){
+  var T=[[5000,0],[10000,.15],[20000,.25],[30000,.30],[40000,.33],[50000,.36],[70000,.38],[Infinity,.40]];
+  var LIB=["0 – 5 000","5 000 – 10 000","10 000 – 20 000","20 000 – 30 000","30 000 – 40 000","40 000 – 50 000","50 000 – 70 000","أكثر من 70 000"];
+  function v(id){var e=document.getElementById(id);if(!e)return 0;var x=parseFloat(e.value);return isNaN(x)?0:x;}
+  function put(id,x){var e=document.getElementById(id);if(e)e.value=Math.round(x);}
+  function txt(id,x){var e=document.getElementById(id);if(e)e.textContent=Math.round(x).toLocaleString('fr-FR')+' د';}
+  function radio(n){var e=document.querySelector('input[name="'+n+'"]:checked');return e?e.value:'';}
+
+  function pastille(groupe){
+    document.querySelectorAll('#'+groupe+' label').forEach(function(l){
+      l.classList.toggle('on',l.querySelector('input').checked);
+    });
+  }
+  function basculer(champs,actif){
+    champs.forEach(function(id){
+      var e=document.getElementById(id);
+      e.disabled=!actif; e.classList.toggle('gris',!actif);
+      var lg=e.closest('.ligne'); if(lg) lg.classList.toggle('inactive',!actif);
+    });
+  }
+
+  function calcul(){
+    pastille('etatCivil'); pastille('regimeChoix');
+    var an=v('annee')||new Date().getFullYear();
+    document.getElementById('ouv').value='01/01/'+an;
+    document.getElementById('clo').value='31/12/'+an;
+
+    var forfait=radio('rg')==='forfait';
+    basculer(['rCaHT','rCaTTC','rResC','rResF'],!forfait);
+    basculer(['fRecettes'],forfait);
+
+    var recettesTTC, benefice;
+    if(forfait){
+      recettesTTC=v('fRecettes');
+      put('fTotal',recettesTTC);
+      put('fBenef',recettesTTC*0.8);
+      benefice=recettesTTC*0.8;
+    }else{
+      recettesTTC=v('rCaTTC');
+      put('fTotal',0); put('fBenef',0);
+      benefice=Math.max(0,v('rResF'));
+    }
+    put('netCat',benefice);
+    put('globalNet',benefice);
+
+    var ec=radio('ec');
+    var chef=(ec==='m'||((ec==='d'||ec==='v')&&v('enf')>0))?300:0;
+    var enfants=Math.min(4,v('enf'))*100+Math.min(2,v('enfEtu'))*1000+v('enfH')*2000;
+    put('dChef',chef); put('dEnf',enfants);
+    var deduc=chef+enfants+v('dCnss')+v('dLogement')+v('dVie');
+    put('dTotal',deduc);
+
+    var imposable=Math.max(0,Math.floor(benefice-deduc));
+    put('imposable',imposable);
+
+    var corps=document.getElementById('corpsBareme'),html='',p=0,impot=0;
+    for(var i=0;i<T.length;i++){
+      var haut=T[i][0],taux=T[i][1];
+      var part=Math.max(0,Math.min(imposable,haut)-p);
+      var due=part*taux; impot+=due; p=haut;
+      html+='<tr'+(part?'':' class="vide"')+'><td>'+LIB[i]+'</td><td>'+Math.round(taux*100)+'%</td>'+
+            '<td class="mt">'+Math.round(part).toLocaleString('fr-FR')+'</td>'+
+            '<td class="mt">'+Math.round(due).toLocaleString('fr-FR')+'</td></tr>';
+    }
+    corps.innerHTML=html;
+    document.getElementById('tBareme').innerHTML='<b>'+Math.round(impot).toLocaleString('fr-FR')+'</b>';
+
+    put('baseMin',recettesTTC);
+    var mini=Math.max(recettesTTC*0.002,300);
+    put('minImpot',mini);
+    var du=Math.max(impot,mini);
+    put('impotDu',du);
+    put('hImpot',du);
+
+    put('cssBase',imposable);
+    var css=imposable*v('cssTaux')/100;
+    put('cssDue',css);
+
+    var paye=v('ras')+v('ac1')+v('ac2')+v('ac3');
+    put('acTotal',paye);
+    var solde=du+css-paye;
+
+    txt('sBenef',benefice); txt('sDeduc',deduc); txt('sImposable',imposable);
+    txt('sImpot',du); txt('sCss',css); txt('sPaye',paye);
+    txt('sSolde',Math.abs(solde));
+    document.getElementById('sLabel').textContent=solde>=0?'المبلغ المستوجب':'فائض ضريبة';
+  }
+
+  document.querySelectorAll('input,select').forEach(function(e){
+    e.addEventListener('input',calcul); e.addEventListener('change',calcul);
+  });
+  calcul();
+})();
+</script>
+</body>
+</html>

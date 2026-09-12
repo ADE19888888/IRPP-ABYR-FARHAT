@@ -78,19 +78,53 @@
   .boutons button.plein{background:var(--encre);color:#fff}
   footer{font-family:var(--lat);direction:ltr;text-align:left;font-size:.78rem;color:var(--doux);margin-top:22px;line-height:1.6}
 
+  .officiel,.signature{display:none}
+
   @media print{
-    body{background:#fff}
-    .boutons,.legende{display:none}
-    .feuille,.resume{break-inside:avoid;border-color:#888}
-    .titre,.resume{background:#fff;color:#000;border:2px solid #000}
-    .titre p,.resume .l{color:#333;border-color:#bbb}
-    input.gris,table.grille td.off{background:#f2f2f2;-webkit-print-color-adjust:exact;print-color-adjust:exact}
-    input{border:1px solid #999!important}
+    @page{size:A4;margin:12mm}
+    html,body{background:#fff;color:#000;font-size:10.5pt;line-height:1.45}
+    .enveloppe{max-width:none;padding:0;margin:0}
+    .titre,.legende,.boutons,.note,footer{display:none!important}
+    .officiel{display:block;text-align:center;border:2px solid #000;padding:8px 10px;margin-bottom:8px}
+    .officiel .etat{font-size:.8rem;line-height:1.4}
+    .officiel h1{margin:6px 0 2px;font-size:1.15rem}
+    .officiel .an{font-size:.9rem;font-weight:700}
+    .ligne .nom em,label.pt em,.feuille>h2 span{display:none!important}
+    .feuille{border:1.2px solid #000;border-radius:0;padding:8px 10px;margin-bottom:8px;break-inside:avoid}
+    .feuille>h2{border-bottom:1.2px solid #000;font-size:.98rem;padding-bottom:5px}
+    h3{color:#000;margin:10px 0 4px;font-size:.9rem;text-decoration:underline}
+    .ligne{padding:3px 0;border-bottom:1px dotted #999}
+    .duo>div{flex:1 1 200px}
+    label.pt{color:#000;margin-bottom:1px;font-size:.78rem}
+    input,select{padding:2px 5px;border-radius:0;font-size:.92rem;color:#000;font-weight:700;
+      border:none;border-bottom:1px dotted #444;background:#fff!important}
+    input.calc{border:none;border-bottom:1px solid #000;background:#fff!important}
+    input.gris,select.gris,table.grille td.off{
+      background:#e6e6e6!important;border-bottom:none;color:#777;
+      -webkit-print-color-adjust:exact;print-color-adjust:exact}
+    .choix label{border:1px solid #000;padding:2px 8px;font-size:.85rem}
+    .choix label.on{background:#ddd!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+    .choix input{display:none}
+    .choix label.on::before{content:"✕ "}
+    table.grille th,table.grille td{border:1px solid #000}
+    table.grille td.on{background:#ddd!important;color:#000;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+    table.bareme th,table.bareme td{border:1px solid #000;padding:4px}
+    .resume{background:#fff!important;color:#000;border:1.5px solid #000;border-radius:0;padding:10px 12px;break-inside:avoid}
+    .resume .l{border-bottom:1px solid #999;color:#000;padding:5px 0}
+    .signature{display:flex;justify-content:space-between;gap:20px;margin-top:14px;break-inside:avoid}
+    .signature div{flex:1;border:1px solid #000;padding:8px 10px;min-height:90px;font-size:.85rem}
+    .signature b{display:block;margin-bottom:6px}
   }
 </style>
 </head>
 <body>
 <div class="enveloppe">
+
+  <div class="officiel">
+    <div class="etat">الجمهورية التونسية<br>وزارة المالية — الإدارة العامة للأداءات</div>
+    <h1>التصريح بالضريبة على دخل الأشخاص الطبيعيين</h1>
+    <div class="an">صنف: أرباح المهن غير التجارية — النظام الحقيقي · دخل سنة <span id="anImpr"></span></div>
+  </div>
 
   <div class="titre">
     <h1>التصريح بالضريبة على دخل الأشخاص الطبيعيين</h1>
@@ -169,8 +203,8 @@
   <div class="feuille">
     <h2>أرباح المهن غير التجارية<span>Page 2 · bénéfices non commerciaux</span></h2>
     <div class="choix" id="regimeChoix" style="margin-bottom:6px">
-      <label class="on"><input type="radio" name="rg" value="forfait" checked> قاعدة تقديرية (80%)</label>
-      <label><input type="radio" name="rg" value="reel"> نظام حقيقي (محاسبة)</label>
+      <label><input type="radio" name="rg" value="forfait"> قاعدة تقديرية (80%)</label>
+      <label class="on"><input type="radio" name="rg" value="reel" checked> نظام حقيقي (محاسبة)</label>
     </div>
 
     <h3>أ) النظام الحقيقي</h3>
@@ -178,8 +212,9 @@
     <div class="ligne inactive"><div class="nom">رقم المعاملات عند التصدير<em>Export</em></div><div class="val"><input type="text" class="gris" value="—" disabled></div></div>
     <div class="ligne" id="lgR2"><div class="nom">رقم المعاملات الجملي بما في ذلك الأداءات<em>CA toutes taxes comprises</em></div><div class="val"><input type="number" id="rCaTTC" class="gris" disabled></div></div>
     <div class="ligne inactive"><div class="nom">مبلغ المنح<em>Subventions</em></div><div class="val"><input type="text" class="gris" value="—" disabled></div></div>
-    <div class="ligne" id="lgR3"><div class="nom">النتيجة المحاسبية<em>Résultat comptable</em></div><div class="val"><input type="number" id="rResC" class="gris" disabled></div></div>
-    <div class="ligne" id="lgR4"><div class="nom">النتيجة الجبائية<em>Résultat fiscal</em></div><div class="val"><input type="number" id="rResF" class="gris" disabled></div></div>
+    <div class="ligne" id="lgR5"><div class="nom">المصاريف المبررة للسنة<em>Charges justifiées de l'année</em></div><div class="val"><input type="number" id="rCharges" class="gris" disabled></div></div>
+    <div class="ligne"><div class="nom">النتيجة المحاسبية<em>Résultat comptable, calculé</em></div><div class="val"><input type="number" id="rResC" class="calc" readonly></div></div>
+    <div class="ligne" id="lgR4"><div class="nom">النتيجة الجبائية<em>Résultat fiscal — laissez 0 s'il n'y a pas de réintégrations</em></div><div class="val"><input type="number" id="rResF" class="gris" value="0" disabled></div></div>
 
     <h3>ب) ضبط الربح على أساس قاعدة تقديرية</h3>
     <div class="ligne" id="lgF1"><div class="nom">المقابيض بعنوان الخدمات المحلية<em>Encaissements de l'année, TTC</em></div><div class="val"><input type="number" id="fRecettes" value="0"></div></div>
@@ -289,6 +324,12 @@
     <div class="l"><span id="sLabel">المبلغ المستوجب</span><b id="sSolde">0</b></div>
   </div>
 
+  <div class="signature">
+    <div><b>إني الممضي أسفله أشهد بصحة البيانات التي تضمنها هذا التصريح</b>
+      في .......................... بتاريخ ..........................<br><br>الإمضـــــاء</div>
+    <div><b>خاص بالإدارة</b><br>رقم الوصل ..........................<br>تاريخ الوصل ..........................<br><br>طابع القابض</div>
+  </div>
+
   <div class="boutons">
     <button class="plein" onclick="window.print()">طباعة أو حفظ PDF</button>
     <button onclick="if(confirm('إفراغ كل الخانات؟'))location.reload()">إفراغ</button>
@@ -328,19 +369,23 @@
     document.getElementById('clo').value='31/12/'+an;
 
     var forfait=radio('rg')==='forfait';
-    basculer(['rCaHT','rCaTTC','rResC','rResF'],!forfait);
+    basculer(['rCaHT','rCaTTC','rCharges','rResF'],!forfait);
     basculer(['fRecettes'],forfait);
+    document.getElementById('anImpr').textContent=an;
 
     var recettesTTC, benefice;
     if(forfait){
       recettesTTC=v('fRecettes');
       put('fTotal',recettesTTC);
       put('fBenef',recettesTTC*0.8);
+      put('rResC',0);
       benefice=recettesTTC*0.8;
     }else{
       recettesTTC=v('rCaTTC');
       put('fTotal',0); put('fBenef',0);
-      benefice=Math.max(0,v('rResF'));
+      var resC=v('rCaHT')-v('rCharges');
+      put('rResC',resC);
+      benefice=Math.max(0,v('rResF')||resC);
     }
     put('netCat',benefice);
     put('globalNet',benefice);

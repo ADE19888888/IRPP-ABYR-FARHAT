@@ -153,6 +153,10 @@
       <label><input type="radio" name="ec" value="d"> مطلّق</label>
       <label><input type="radio" name="ec" value="v"> أرمل</label>
     </div>
+    <div style="display:flex;align-items:flex-start;gap:9px;margin-top:12px">
+      <input type="checkbox" id="chefFam" checked style="width:18px;height:18px;margin-top:4px;accent-color:var(--accent)">
+      <label for="chefFam" style="margin:0;font-size:.92rem;color:var(--encre)">رئيس العائلة<em style="font-style:normal;font-family:var(--lat);font-size:.72rem;color:var(--doux);display:block;direction:ltr;text-align:right">Ouvre droit aux déductions « chef de famille » et « enfants ». Pour une femme mariée, ce droit revient en principe à l'époux : décochez si c'est son cas.</em></label>
+    </div>
     <h3>الأطفال في الكفالة</h3>
     <div class="duo">
       <div><label class="pt">أطفال دون 20 سنة<em>Enfants de moins de 20 ans (100 DT chacun, 4 max)</em></label><input type="number" id="enf" value="0" min="0" max="4"></div>
@@ -375,8 +379,9 @@
     put('globalNet',benefice);
 
     var ec=radio('ec');
-    var chef=(ec==='m'||((ec==='d'||ec==='v')&&v('enf')>0))?300:0;
-    var enfants=Math.min(4,v('enf'))*100+Math.min(2,v('enfEtu'))*1000+v('enfH')*2000;
+    var chefOk=document.getElementById('chefFam').checked;
+    var chef=chefOk?300:0;
+    var enfants=chefOk?(Math.min(4,v('enf'))*100+Math.min(2,v('enfEtu'))*1000+v('enfH')*2000):0;
     put('dChef',chef); put('dEnf',enfants);
     var deduc=chef+enfants+v('dCnss')+v('dLogement');
     put('dTotal',deduc);
@@ -461,7 +466,7 @@ const PAGES=["/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAA4KCw0LCQ4NDA0QDw4RFiQXFhQUFiwgIR
     ar(0,530,362,val('adresse'),10,480);
     cases(0,[[55,76,377],[76,98,377],[98,119,377],[119,140,377]],val('cp'));
     ar(0,525,399,val('activite'),10,300);txt(0,40,399,val('tel'),9);
-    const ec=radio('ec');const bec={c:[371,389],m:[261,280],d:[172,191],v:[86,105]}[ec];if(bec)croix(0,bec[0],bec[1],430,448);
+    const ec=radio('ec');const bec={m:[371,389],d:[261,280],v:[172,191]}[ec];if(bec)croix(0,bec[0],bec[1],430,448);else if(ec==='c')croix(0,481,497,430,448);
     const nH=Math.min(4,Math.round(v('enfH')));if(nH)centre(0,426,444,459,String(nH),10);
     let codes='';for(let i=0;i<Math.min(4,Math.round(v('enf')));i++)codes+='1';for(let i=0;i<Math.min(4-codes.length,Math.round(v('enfEtu')));i++)codes+='2';
     const benf=[[269,295],[243,269],[218,243],[192,218]];[...codes].forEach((c,i)=>{if(benf[i])centre(0,benf[i][0],benf[i][1],459,c,10);});
